@@ -1,5 +1,17 @@
 <script setup>
 import presents from './presents.json'
+import { useCycleList } from '@vueuse/core'
+import { computed } from 'vue'
+
+const { state, next } = useCycleList(['base', 'ascending'])
+
+const modes = {
+  base: (presentA, presentB) => presentA.id - presentB.id,
+  ascending: (presentA, presentB) =>
+    presentA.dimensions.height * presentA.dimensions.width - presentB.dimensions.height * presentB.dimensions.width,
+}
+
+const sortGifts = computed(() => [...presents].sort(modes[state.value]))
 </script>
 
 <template>
@@ -10,14 +22,15 @@ import presents from './presents.json'
       </div>
       <div class="mt-2 flex justify-center items-center">
         <img
-          v-for="present in presents"
+          v-for="present in sortGifts"
           :key="present.id"
           :src="present.src"
           :alt="`Present ${present.id}`"
           data-qa="present"
-          :data-surface="sortedGifts"
+          :data-surface="present.dimensions.height * present.dimensions.width"
         />
       </div>
+      <button @click="next()">Toggle Sort</button>
     </div>
   </div>
 </template>
