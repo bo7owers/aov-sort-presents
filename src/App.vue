@@ -1,3 +1,7 @@
+<script setup>
+import presents from './presents.json'
+</script>
+
 <template>
   <div class="w-full h-full p-4 flex justify-center items-center">
     <div class="max-w-md">
@@ -11,12 +15,9 @@
           :src="present.src"
           :alt="`Present ${present.id}`"
           data-qa="present"
+          :data-surface="sortedGifts"
         />
       </div>
     </div>
   </div>
 </template>
-
-<script setup>
-import presents from './presents.json'
-</script>
